@@ -1,0 +1,58 @@
+<!--=============发送邮件弹窗=============-->
+			<div class="pop_report">
+				<form action="{@url:report/index/selemail}" method="post">
+				<div class="pop_cont">
+					<ul>
+							<li>
+							<!--# if($u_name){ #-->
+							<!--# foreach ($u_name as $key => $v) { #-->
+							<input type="checkbox" name="se_type[]" value="{$v['uid']}" >{$v['username']}&nbsp;&nbsp;
+							<!--#}#-->
+							<p style="text-align:center;color:#CCCCCC;" ><a href="javascript:textshow()">点击添加邮箱</a></p>
+							<table style="margin-top:10px;display:none" id="textemail">
+							<tr>
+									<td>站外邮箱:<input type="text"  style="width:350px;"  name="textemail"></td>
+							</tr>
+							</table>
+							<!--#}else{#-->
+								赶快去添加好友吧!
+							<!--#}#-->
+							</li>
+					</ul>
+				</div>
+				<div class="pop_bottom">
+					<input type="hidden" name="tid" value="{$tid}">
+					<input type="hidden" name="uid" value="{$loginuid}">
+					<button type="submit" class="btn btn_submit" onclick="return check()">提交</button>
+				</div>
+				</form>
+			</div>
+<!--=============发送邮件=============-->
+<script>
+	function check(){
+		var text_state = $("input[name='textemail']").val();
+		if(text_state){
+				flag=true;
+				return true;
+		}else{
+			$("input[name='se_type[]']").each(function(){
+			if($(this).attr("checked")){
+				flag=true;
+				return true;
+			}else{
+				flag=false;
+				return false;
+			}
+			});
+		}
+		return flag;
+	}
+	function textshow(){
+		$("#textemail").show();
+		$(".pop_cont p").hide();
+	}
+$(function(){
+	$("#J_report_pop strong").html('邮件邀请');
+})
+
+</script>

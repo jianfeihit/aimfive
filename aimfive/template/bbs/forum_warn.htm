@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@theme:css}/forum.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+</head>
+<body>
+
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<pw-tpl id="main_segment"/>
+		<div class="bread_crumb" id="bread_crumb">
+			<a href="{@url:}" class="home" title="{@C:site.info.name}">首页</a><em>&gt;</em><a href="{@url:bbs/forum/my}">我的回复</a>
+			
+		</div>
+		<div class="main cc">
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_2' load='true' />
+			</div>
+			<div class="main_body"  style="width:620px;">
+				<div class="main_content cc">
+					<pw-tpl id="first_segment"/>
+					<advertisement id='Thread.Top' sys='1'/>
+					<div class="box_wrap thread_page">
+				<nav>				
+					<div class="tab_menu">
+						<ul class="myInfoUl">
+								<template source='TPL:bbs.index_menu' load='true' />
+								<div class="clear"></div>
+						</ul>
+					</div>
+				</nav>
+			<!--公告-->
+						<component tpl='TPL:announce.announce' class='SRV:announce.srv.PwAnnounceService' method='getAnnounceForBbsScroll' args='array()'/>
+						<!--公告结束-->
+			<div class="paixu" style="width:580px;">
+			
+				<h3>推荐</h3>
+			</div>
+			<!--# if ($threadList) { #-->
+				<ul class="askSel" >
+				<!--# foreach ($threadList as $key => $value) { #-->
+					<li>
+					<span style="float:right">{$value['v_type_name']}</span>
+					<h3 >
+						
+						<!--#if($value['cread_name']== $loginUser->username){#-->『我』<!--#}else{ #-->『{$value['cread_name']}』<!--#}#-->
+						<b >邀请</b>
+						<!--#if($value['cread_name']!= $loginUser->username){#-->『我』<!--#}else{ #-->
+						<!--# if ($value['fid_name']) { #-->
+									<!--# foreach ($value['fid_name'] as $k => $v) { #-->
+											『{$v['username']}』
+									<!--#}#-->
+							<!--#}#-->
+						<!--#}#-->
+						关注
+						<!--# if ($value['t_info']['topic_type']==1) { #-->
+						<span style="color:red">【提问】</span>
+						<!--# }else{ #-->
+						<span style="color:red">【分享】</span>
+							<!--#}#-->
+						帖子:						
+					<a href="{@url:bbs/read/run?tid=$value['tid']&fid=$value['fid']}" class="st" style="{$value['highlight_style']};" title="{$value['subject']}" target="_blank">{$value['t_info']['subject']}</a> <hook class='$threadList' name='createHtmlAfterSubject' args="array($value)" /><!--# if ($value['ifupload']) { #--><span class="posts_icon"><i class="icon_{$uploadIcon[$value['ifupload']]}" title="{$icon[$uploadIcon[$value['ifupload']]]}"></i></span><!--# } #-->
+					</h3>
+				
+					<div class="clear"></div>
+					<div class="date">
+					<span class="colorGray">&nbsp;&nbsp;&nbsp;</span>
+					<p>
+					<!--# if ($value['t_info']['topic_type']==1) { #-->
+					悬赏<span>{$value['t_info']['jf']}</span>分
+					<!--#}#-->
+					浏览<span>{$value['t_info']['hits']}</span> | 回复<span>{$value['t_info']['replies']}</p>
+					</div>
+					</li>
+					<!--# } #-->
+					</ul>
+						<!--# } else { #-->
+						<div class="not_content">
+							啊哦，本站暂没有任何内容哦！
+						</div>
+						<!--# } #-->
+					</div>
+						<div class="J_page_wrap cc" data-key="true">
+						<page tpl="TPL:common.page" page="$page" per="$perpage" count="$count" total="$totalpage" url="bbs/index/run" args="$urlargs"/>
+					</div>
+					<pw-tpl id="forum_bottom"/>
+					
+				</div>
+
+			</div>
+			
+		</div>
+	</div>
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+Wind.use('jquery', 'global');
+function sestate(vid,uid,state){
+	$.getJSON('index.php?c=forum&a=device_state',{vid:vid,uid:uid,state:state},function(msg){
+			if(msg.error==0){
+					Wind.Util.resultTip({
+						msg : msg.info,
+						callback : function(){
+							location.reload();
+						}
+					});
+			
+			}
+	})
+
+}
+</script>
+<pw-end/>
+</body>
+</html>

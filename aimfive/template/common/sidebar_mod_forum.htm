@@ -1,0 +1,12 @@
+		<!--#
+			$forumdb = Wekit::load('forum.srv.PwForumService')->getCommonForumList();
+			if ($pwforum instanceof PwForumBo) {
+				$__currentCateId = $pwforum->getCateId();
+				$__currentFid = $pwforum->fid;
+				!isset($forumdb[0][$__currentCateId]) && $__currentCateId = key($forumdb[0]);
+			} else {
+				$__currentCateId = key($forumdb[0]);
+				$__currentFid = 0;
+			}
+		#-->
+		

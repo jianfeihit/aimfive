@@ -1,0 +1,20 @@
+<template source='TPL:common.sidebar_mod_my' load='true' />
+<template source='TPL:common.sidebar_mod_my_forum' load='true' />
+<pw-drag id="sidebar_1"/>
+<template source='TPL:common.sidebar_mod_forum' load='true' />
+<!--热点话题
+<component tpl='TPL:tag.common_hot_model' class='SRV:tag.srv.PwTagService' method='getHotTags' args="0','10"/>
+-->
+<template source='TPL:common.sidebar_mod_user' load='true' />
+<pw-drag id="sidebar_thread"/>
+<advertisement id='Site.Sider.Btm' sys='1'/>
+<ul class="ulNav">
+		
+			<li <!--#if($menu=='fabu'){#--> class="selected"<!--#}#-->><span class="bgStyle8">&nbsp;</span><a href="index.php?c=post&fid=2&type=tw" title="提问分享">提问</a></li>
+			<li <!--#if($menu=='fabu1'){#--> class="selected"<!--#}#-->><span class="bgStyle8">&nbsp;</span><a href="index.php?c=post&fid=2&type=fx" title="提问分享">分享</a></li>
+			<li <!--#if($menu=='guanzhu'){#--> class="selected"<!--#}#-->><span class="bgStyle9">&nbsp;</span><a href="index.php" title="我的关注">我的关注</a></li>
+			<li<!--#if($menu=='nanti' || $menu=='fenlei' || $menu=='hot' ){#--> class="selected"<!--#}#--> ><span class="bgStyle10">&nbsp;</span><a href="index.php?c=forum&a=puzzle" title="难题">浏览</a></li>
+			<li<!--#if($menu=='liuyan'){#--> class="selected"<!--#}#-->><span class="bgStyle12">&nbsp;</span><a href="index.php?m=message&c=message" title="留言板">留言板</a></li>
+			<li<!--#if($menu=='rizhi'){#--> class="selected"<!--#}#-->><span class="bgStyle14">&nbsp;</span><a href="index.php?m=message&c=notice" title="日志">日志</a></li>
+</ul>
+<!--design role="segment" id="linkdemo"/-->

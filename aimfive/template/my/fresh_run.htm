@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@theme:css}/fresh.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+<style>
+.aPre{
+	cursor:url({@theme:images}/common/pre.cur),auto;
+}
+.aNext{
+	cursor:url({@theme:images}/common/next.cur),auto;
+	right:0;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<div class="bread_crumb">
+			<a href="{@url:}" class="home" title="{@C:site.info.name}">首页</a><em>&gt;</em>
+			<a href="{@url:my/fresh/run}">我的关注</a><!--#if($currents != 'all'){#--><em>&gt;</em><a href="{@url:my/fresh/run?gid=$currents}">{$type[$currents]}</a><!--#}#-->
+		</div>
+		<div class="maina cc">
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_2' load='true' />
+			</div>
+			<div class="main_body">
+				<div class="main_content">
+					<!--新鲜事列表-->
+					<pw-tpl id="first_segment"/>
+					<div style="width:638px;overflow:hidden;"><advertisement id='Common.Attention.Btm' sys='1'/></div>
+					<div class="box_wrap fresh_page">
+					<nav>
+				
+								<div class="tab_menu">
+		<ul class="myInfoUl">
+			<li >
+				<a  href="{@url:bbs/index/run?order=lastpost}"><p class="myInfoBg1">我的提问</p></a>
+			</li>
+			<li>
+				<a href="{@url:bbs/forum/my}"><p class=" myInfoBg2">我的分享</p></a>
+			</li>
+			<li >
+				<a href="{@url:bbs/forum/myback}"><p class=" myInfoBg3">我的回复</p></a>
+			</li>
+			<li>
+				<a href="{@url:bbs/forum/device}"><p class=" myInfoBg4">器件</p></a>
+			</li>
+			<li>
+				<a href="{@url:bbs/forum/firend}"><p class=" myInfoBg5">朋友</p></a>
+			</li>
+			<li class="colorStyle">
+				<a href="index.php?m=my&c=fresh"><p class=" myInfoBg6">追踪</p></a>
+			</li>
+			<div class="clear"></div>
+		</ul>
+	</div>
+				</nav>
+				<!--公告-->
+						<component tpl='TPL:announce.announce' class='SRV:announce.srv.PwAnnounceService' method='getAnnounceForBbsScroll' args='array()'/>
+						<!--公告结束-->
+			<div class="paixu" style="margin-bottom:10px;">
+			
+				<h3>我的追踪</h3>
+			</div>
+						<!--# if ($freshdb) {#-->
+						<div class="feed_lists" id="J_feed_lists">
+							<div id="J_news_tip" class="tips" style="display:none;">有<strong>10</strong>条新鲜事，点击查看</div>
+							<!--# foreach ($freshdb as $key => $fresh) { #-->
+							<template source='fresh_floor' load='true' />
+							<!--# } #-->
+							<div>
+								<page tpl="TPL:common.page" total="$totalpage" page="$page" per="$perpage" count="$count" url="my/fresh/run" args="$url" />
+							</div>
+						</div>
+						<!--# } else { #-->
+						<div class="not_content">啊哦，我的关注暂没有任何内容哦！</div>
+						<!--# } #-->
+					</div>
+		<!--结束-->
+					<pw-tpl id="fresh_bottom"/>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+//回复提交地址
+var FRESH_DOREPLY = '{@url:my/fresh/doreply}',
+	FORUM_LIST = '{@url:forum/list}',
+	FORUM_JOIN = '{@url:bbs/forum/join}',
+	IMG_UPLOAD = "{@url:bbs/upload/dorun?_json=1}";
+
+var fast_upload_config = {
+	size_limit : '{$maxSize}',		//图片大小限制
+	num_limit : '{$attachnum}',		//数量限制
+	types : '{$filetypes}'			//上传图片类型
+};
+
+//引入jquery文件
+Wind.use('jquery', 'global', 'swfupload', 'ajaxForm', function(){
+	//支持的图片
+	var filetype = {@Pw::array2str(Pw::subArray(Wekit::C('attachment', 'extsize'), array('jpg', 'jpeg', 'png', 'gif', 'bmp')))|html},
+		sup_pic = false;
+	for(i in filetype) {
+		if(i) {
+			sup_pic = true;
+		}
+	}
+	if(!sup_pic) {
+		//不支持图片上传
+		$('a.a_photo').hide();
+	}
+	
+	Wind.js(GV.JS_ROOT +'pages/my/freshFast.js?v='+ GV.JS_VERSION);
+	
+	Wind.js(GV.JS_ROOT +'pages/common/freshRead.js?v='+ GV.JS_VERSION);
+	
+});
+</script>
+<pw-end/>
+</body>
+</html>

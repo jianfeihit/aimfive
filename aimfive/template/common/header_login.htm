@@ -1,0 +1,80 @@
+<!--# if (!$loginUser->isExists()) { #-->
+<div class="header_login">
+	<hook name="header_info_3"/><a rel="nofollow" href="{@url:u/login/run}">登录</a><a rel="nofollow" href="{@url:u/register/run}">注册</a>
+</div>
+<!--# } else {
+	if ($pwforum && $pwforum->isForum()) {
+		$_tmpfid = $pwforum->fid;
+		$_tmpcid = $pwforum->getCateId();
+	} else {
+		$_tmpfid = 0;
+		$_tmpcid = $pwforum ? $pwforum->getCateId() : '0';
+	}
+#-->
+<!--
+	<a class="header_login_btn" id="J_head_forum_post" role="button" aria-label="快速发帖"  href="#" title="快速发帖" tabindex="-1"   onclick="javascript:window.location.href='?c=post&fid=2'"><span class="inside"><span class="header_post" >发帖</span></span></a>
+	-->
+	
+	<!--#
+		$messageCount = $loginUser->info['notices'] + $loginUser->info['messages'];
+		$messageClass = $messageCount ? 'header_message' : 'header_message header_message_none';
+	#-->
+	<a class="header_login_btn" id="J_head_msg_btn" tabindex="0" href="{@url:message/message/run}" aria-haspopup="J_head_msg_pop" aria-label="消息菜单,按pagedown打开菜单,tab键导航,esc键关闭"><span class="inside"><span class="{$messageClass}">消息<em class="core_num J_hm_num">{$messageCount}</em></span></span></a>
+	<!--消息下拉菜单-->
+	<div id="J_head_msg_pop" tabindex="0" aria-label="消息下拉菜单,按ESC键关闭菜单" class="header_menu_wrap my_message_menu" style="display:none;">
+		<div class="header_menu cc">
+			<div class="header_menu_hd" id="J_head_pl_hm"><span class="{$messageClass} header_message_down">消息<em class="core_num J_hm_num">{$messageCount}</em></span></div>
+			<div id="J_head_msg" class="my_message_content"><div class="pop_loading"></div></div>
+		</div>
+	</div>
+	<div class="header_login_later">
+		<!-- <hook name="header_info_1"/>
+		<a   href="{@url:space/index/run?uid=$loginUser->uid}"  class="username" title="{$loginUser->username}">{@Pw::substrs($loginUser->username,12)}<em ></em></a>
+		<hook name="header_info_2"/> -->
+		<div class="fl">
+		<div role="menu" class="header_menu_wrap my_menu_wrap" style="margin:0;color:#FFFFFF">
+			<div>
+				<!--#
+				$_url = '';
+				$_panelManage = false;
+				if ($loginUser->getPermission('panel_bbs_manage')) {
+					$_url = 'manage/content/run';
+					$_panelManage = true;
+				}
+				if (!$_panelManage && $loginUser->getPermission('panel_user_manage')) {
+					$_url = 'manage/user/run';
+					$_panelManage = true;
+				}
+				if (!$_panelManage && $loginUser->getPermission('panel_report_manage')) {
+					$_url = 'manage/report/run';
+					$_panelManage = true;
+				}
+				if (!$_panelManage && $loginUser->getPermission('panel_recycle_manage')) {
+					$_url = 'manage/recycle/run';
+					$_panelManage = true;
+				}
+				if ($_panelManage) {
+				#-->
+					
+					<a href="{@WindUrlHelper::createUrl($_url)|url}" rel="nofollow"><em class="icon_system"></em>前台管理</a>
+				<!--#} if (Pw::getstatus($loginUser->info['status'], PwUser::STATUS_ALLOW_LOGIN_ADMIN) || Pw::inArray(3, $loginUser->groups)) {#-->
+					<a href="{@Wind::getComponent('router')->getRoute('pw')->checkUrl('admin.php')}" target="_blank" rel="nofollow"><em class="icon_admin" ></em>系统后台</a>
+				<!--# } #-->
+				
+					<a href="index.php?m=space&c=profile" rel="nofollow"><em class="icon_system"></em>个人资料</a>
+					<a href="{@url:profile/secret/run?_left=secret}"><em class="icon_profile"></em>设置</a>
+					<hook name="header_my" />
+					<a href="{@url:u/login/logout}" rel="nofollow"><em class="icon_quit"></em>退出</a>
+			
+			</div>
+		</div>
+		</div>
+	</div>
+	<!--# if ($loginUser->info['message_tone'] > 0 && $messageCount > 0) { #-->
+	<audio autoplay="autoplay">
+		<source src="{@theme:images}/message/msg.wav" type="audio/wav" />
+		<source src="{@theme:images}/message/msg.mp3" type="audio/mp3" />
+		<div style='overflow:hidden;width:0;float:left'><embed src='{@theme:images}/message/msg.wav' width='0' height='0' AutoStart='true' type='application/x-mplayer2'></embed></div>
+	</audio>
+	<!--# } #-->
+<!--# } #-->

@@ -1,0 +1,36 @@
+<!--#if ($site_info_notice = Wekit::C('site','info.notice')) {#-->
+<style>.header_wrap{top:29px;}body{padding-top:75px;}</style><div id="notice">{$site_info_notice}</div>
+<!--#}#-->
+<header class="header_wrap">
+	<div id="J_header" class="header cc">
+		<div class="logo">
+			<a href="{@url:}">
+				<!--# if($__css = Wekit::C('site', 'css.logo')) { #-->
+				<!--后台logo上传-->
+				<img src="{@Pw::getPath($__css)}" alt="{@Wekit::C('site','info.name')}" style="padding-top:5px;">
+				<!--# } else { #-->
+				<img src="{@theme:site.images}/logo.png" alt="{@Wekit::C('site','info.name')}" style="padding-top:5px;">
+				<!--# } #-->
+			</a>
+		</div>
+	</div>
+</header>
+<!--#
+if ($child) {
+foreach ($child as $ck => $cv) {
+	 if ($currentId == $ck){
+#-->
+	<div class="nav_weak" id="{$ck}">
+<!--# }else{ #-->
+	<div class="nav_weak" id="{$ck}" style="display:none">
+<!--# } #-->
+		<ul class="cc">
+			<!--# foreach($cv as $_v){
+				$current = $_v['current'] ? 'current' : '';
+			#-->
+			<li class="{$current}">{$_v['name']|html}</li>
+			<!--# } #-->
+		</ul>
+	</div>
+<!--#}} #-->
+<div class="tac"><advertisement id='Site.NavBanner' sys='1'/></div>

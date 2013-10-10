@@ -1,0 +1,45 @@
+<!--=============发送邮件弹窗=============-->
+			<div class="pop_report">
+				<form action="{@url:report/index/addwarn}" method="post">
+				<div class="pop_cont">
+					<ul>
+							<li>
+							<!--# if($u_name){ #-->
+							<!--# foreach ($u_name as $key => $v) { #-->
+							<input type="checkbox" name="se_type[]" value="{$v['uid']}" >{$v['username']}&nbsp;&nbsp;
+							<!--#}#-->
+							<!--#}else{#-->
+								赶快成为互相关注好友吧!
+							<!--#}#-->
+							</li>
+					</ul>
+				</div>
+				<div class="pop_bottom">
+					<input type="hidden" name="tid" value="{$tid}">
+					<input type="hidden" name="uid" value="{$loginuid}">
+					<!--# if($u_name){ #-->
+					<button type="submit" class="btn btn_submit" onclick="return check()">提交</button>
+					<!--#}#-->
+				</div>
+				</form>
+			</div>
+<!--=============发送邮件=============-->
+<script>
+	function check(){
+		var text_state = $("input[name='textemail']").val();
+			$("input[name='se_type[]']").each(function(){
+			if($(this).attr("checked")){
+				flag=true;
+				return true;
+			}else{
+				flag=false;
+				return false;
+			}
+			});
+		return flag;
+	}
+$(function(){
+	$("#J_report_pop strong").html('邀请关注');
+})
+
+</script>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@theme:css}/forum.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+</head>
+<body>
+
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<pw-tpl id="main_segment"/>
+		<div class="bread_crumb" id="bread_crumb">
+			<a href="{@url:}" class="home" title="{@C:site.info.name}">首页</a><em>&gt;</em><a href="{@url:bbs/forum/my}">我的回复</a>
+			
+		</div>
+		<div class="main cc">
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_2' load='true' />
+			</div>
+			<div class="main_body"  style="width:620px;">
+				<div class="main_content cc">
+					<pw-tpl id="first_segment"/>
+					<advertisement id='Thread.Top' sys='1'/>
+					<div class="box_wrap thread_page">
+				<nav>				
+					<div class="tab_menu">
+						<ul class="myInfoUl">
+								<template source='TPL:bbs.index_menu' load='true' />
+								<div class="clear"></div>
+						</ul>
+					</div>
+				</nav>
+			<!--公告-->
+						<component tpl='TPL:announce.announce' class='SRV:announce.srv.PwAnnounceService' method='getAnnounceForBbsScroll' args='array()'/>
+						<!--公告结束-->
+			<div class="paixu" style="width:580px;">
+			<div class="content_filter" ><a href="{@url:bbs/forum/device?order=postdate}" class="{@Pw::isCurrent($order == 'postdate')}">最新发帖</a><span>|</span><a href="{@url:bbs/forum/device}" class="{@Pw::isCurrent($order != 'postdate')}">最后回复</a></div>
+				<h3>朋友</h3>
+			</div>
+			<!--# if ($threadList) { #-->
+				<ul class="askSel">
+				<!--# foreach ($threadList as $key => $value) { #-->
+					<li>
+					<span style="float:right">{$value['v_type']}</span>
+					<h3>
+					<!--# if ($value['topic_type']==1) { #-->
+					<span style="color:red">【提问】</span>
+					<!--# }else{ #-->
+					<span style="color:red">【分享】</span>
+					<!--#}#-->
+					<a href="{@url:bbs/read/run?tid=$value['tid']&fid=$value['fid']}" class="st" style="{$value['highlight_style']}" title="{$value['subject']}" target="_blank">{$value['subject']}</a> <hook class='$threadList' name='createHtmlAfterSubject' args="array($value)" /><!--# if ($value['ifupload']) { #--><span class="posts_icon"><i class="icon_{$uploadIcon[$value['ifupload']]}" title="{$icon[$uploadIcon[$value['ifupload']]]}"></i></span><!--# } #-->
+					</h3>
+					<div class="touxiangdiv"><span><img class="J_avatar" src="{@Pw::getAvatar($value['lastpost_userid'])}" data-type="middle"  alt="{$loginUser->username}" /></span></div>
+					<div class="contdiv">
+					<p>最后回复：<a class="J_user_card_show" data-uid="{$value['lastpost_userid']}" href="{@url:space/index/run?uid=$value['lastpost_userid']}" target="_blank">{$value['lastpost_username']}&nbsp;&nbsp;&nbsp;</a><span><a aria-label="最后回复时间"><!--# echo Pw::time2str($value['lastpost_time'], 'm-d H:i');#--></a></span></p>
+					
+					</div>
+					<div class="clear"></div>
+					<div class="date">
+					<span class="colorGray">楼主：<a class="J_user_card_show" data-uid="{$value['created_userid']}" href="{@url:space/index/run?uid=$value['created_userid']}">{$value['created_username']}&nbsp;&nbsp;&nbsp;</a><span><!--# echo Pw::time2str($value['created_time'], 'Y-m-d');#--></span></span>
+					<p><!--#if($value['jf']){#-->悬赏<span>{$value['jf']}</span>分 <!--#}#--> 浏览<span>{$value['hits']}</span> | 回复<span>{$value['replies']} | <a href="javascript:click_concerned({$value['tid']},{$value['created_userid']})">关注</a></p>
+					</div>
+					</li>
+					<!--# } #-->
+					</ul>
+						<!--# } else { #-->
+						<div class="not_content">
+							啊哦，本站暂没有任何内容哦！
+						</div>
+						<!--# } #-->
+					</div>
+						<div class="J_page_wrap cc" data-key="true">
+						<page tpl="TPL:common.page" page="$page" per="$perpage" count="$count" total="$totalpage" url="bbs/index/run" args="$urlargs"/>
+					</div>
+					<pw-tpl id="forum_bottom"/>
+					
+				</div>
+
+			</div>
+			<div class="rightside" style="padding:50px 10px 0 0;width:160px;float:right">
+		<h3 class="baseTitle">我的朋友</h3>
+		
+		
+		<ul class="listUl">
+		<!--# if ($fname) { #-->		
+		<!--# foreach ($fname as $key => $value) { #-->
+			<li>
+				<p>&nbsp;{$value['username']}</p>
+			</li>
+			<!--# } #-->	
+			<!--# } #-->
+			<li>
+				<p><a href="{@url:bbs/index/run?m=my&c=follow}">好友管理</a></p>
+			</li>
+		</ul>
+		
+	</div>
+		</div>
+	</div>
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+Wind.use('jquery', 'global');
+
+</script>
+<pw-end/>
+</body>
+</html>

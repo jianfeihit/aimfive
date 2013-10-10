@@ -1,0 +1,364 @@
+<div class="container floor"  ">
+<!--# foreach ($readdb as $key => $read) { #-->
+<a name="{$read['pid']}"></a><!--# if ($read['lou'] == $count-1) { #--><a name="a"></a><!--# } #-->
+<div id="cloudwind_read_readfloor_{$read['pid']}"></div>
+<!--#if($key==0){#-->
+	<!--左开始-->
+	<div class="leftside" style="width:436px;">
+		<div class="myName">
+			<a href="{@url:space/index/run?uid=$read['created_userid']}" data-uid="{$read['created_userid']}" target="_blank"><img src="{@Pw::getAvatar($read['created_userid'])}" class="J_avatar" data-type="middle" alt="{$read['created_username']}"></a>
+			<p>
+			<span class="{@$users[$read['created_userid']]['gender']==1 ? 'women' : 'man'}_{@($_isol = Pw::checkOnline($users[$read['created_userid']]['lastvisit'])) ? 'ol' : 'unol'}" title="{@$_isol ? '在线' : '离线'}"></span><a href="{@url:space/index/run?c=profile}" class="J_user_card_show mr5" data-uid="{$read['created_userid']}">{$read['created_username']}</a>
+			<!--#if ($operateReply['ban']) {#-->
+			<span class="J_post_manage_col" data-role="readbar"><a href="{@url:bbs/manage/ban?tid=$tid&uid=$read['created_userid']}" data-uid="{$read['created_userid']}" class="J_dialog_post fn org w"  style="font-size:12px;">[禁止]</a></span>
+			<!--#}#-->
+			</p>
+		<div>{$ltitle[$users[$read['created_userid']]['groupid']]}
+		<!--# if ($read['created_userid']) { #-->
+			<!--发私信加关注-->
+				<a rel="nofollow" href="{@url:my/follow/add?uid=$read['created_userid']}" data-uid="{$read['created_userid']}" class="follow J_read_follow J_qlogin_trigger">加关注</a>
+				<a rel="nofollow" href="{@url:message/message/pop?username=$read['created_username']}" class="message J_send_msg_pop J_qlogin_trigger" data-name="{$read['created_username']}">写私信</a>
+				<hook class='$threadDisplay' name="createHtmlForUserButton" args="array($users[$read['created_userid']], $read)" />
+		<!--# } #-->
+		</div>
+		</div><div class="clear"></div>
+		<div class="question">
+			<span><!--# if ($threadInfo['topic_type'] && ($topicTypename = $threadDisplay->getTopicTypeName($threadInfo['topic_type']))) { #--><a href="{@url:bbs/thread/run?fid=$pwforum->fid&type=$threadInfo['topic_type']}" style="color:#FFFFFF">[{@$topicTypename|html}]</a><!--# } #-->
+				
+			</span>
+			<p>{$threadInfo['subject']}</p>
+			<div class="clear"></div>
+		</div>
+		<div class="date">
+			<span class="colorGray">发布于：{@Pw::time2str($read['created_time'])}</span>
+				<!--# if ($loginUser->uid && ($read['created_userid'] == $loginUser->uid || $threadPermission['edit'])) { #-->
+				 <a href="{@url:bbs/post/modify?tid=$tid&pid=$read['pid']}">[编辑]</a>
+				<!--# } #-->
+			<p><b>{$read['v_type']}</b></p>
+		</div>
+		<div class="date">
+			<span class="colorBlack">来自：{$read['ipfrom']}</span>
+			<p> 浏览 <span>{$threadInfo['hits']}</span> | 回复 <span>{$threadInfo['replies']}</span> | <a href="javascript:click_concerned({$read['tid']},{$read['created_userid']})">关注</a></p>
+		</div>
+		<div class="quecontent"  style="height:140px;overflow-y: scroll;">
+			<!--# if ($read['disabled'] == 1) { #-->
+						<div class="inside_logs"><span class="red">该帖需要审核通过后才能显示</span></div>
+					<!--# } #-->
+			<!--# if ($read['lou'] != 0 && $read['subject']) { #-->
+			<div class="inside_title">{$read['subject']}</div>
+			<!--# } #-->
+			<p>{$read['content']|html}</p>
+			<!--# if ($read['modified_time']) { #-->
+				<div class="edit_log">[{$read['modified_username']}于{@Pw::time2str($read['modified_time'])}编辑了帖子]</div>
+				<!--# } #-->
+		</div>
+		
+		<p class="appendixStyle"><!--#if($read['topic_type']==1){#-->悬赏点数：{$read['jf']}点<!--#}#-->
+				&nbsp;
+			<span class="positionSpan">
+			<a rel="nofollow" href="{@url:report/index/warn?loginuid=$loginuid&tid=$read['tid']}" data-pid="{$read['pid']}" class="mr10 J_report J_qlogin_trigger">邀请关注</a>
+			<a rel="nofollow" href="{@url:report/index/email?loginuid=$loginuid&tid=$read['tid']}" data-pid="{$read['pid']}" class="mr10 J_report J_qlogin_trigger">邮件邀请</a>
+			</span></span>
+		</p>
+	
+		<div class="finishOff">
+				<!--#if($read['topic_type']==1){#-->
+			<h3 class="titleBase">
+				<span>解决办法</span>
+			</h3>
+			<div class="finishTetx">
+				<!--#if($read['is_ok']==0){#-->
+				<p  style="min-height:50px;">未解决</p>
+				<!--#}else{#-->
+				<p  style="min-height:50px;">【{@$threadDisplay->getFloorName($read['back_lou'])}】 <?php echo mb_substr($read['p_content'],0,100,'utf-8');?></p>
+				<!--#}#-->
+			</div>
+			<!--#}else{#-->
+			<!--# if ($readdb[0]['created_userid'] == $loginUser->uid)  { #-->
+			<span  style="float:right;font-size:12px;color:red" >注:添加完补充信息,点击空白处即可.</span>
+			<!--#}#-->
+			<h3 class="titleBase">
+					
+				<span>补充内容</span>
+				
+			</h3>
+		
+						<div  >
+			
+				<!--#if(!$read['add_content']){#-->
+					<!--# if ($readdb[0]['created_userid'] == $loginUser->uid)  { #-->
+							<textarea rows="3" cols="65"  onblur="addcontent({$read['created_userid']},{$read['tid']})"  id="adcont"  ></textarea>
+					<!--#}else{#-->
+							<textarea rows="3" cols="65"  disabled>暂时没有补充的内容!</textarea>
+					<!--#}#-->	
+				<!--#}else{#-->
+				<textarea rows="3" cols="65"  disabled>{$read['add_content']}</textarea>
+				<!--#}#-->
+					
+			</div>
+			<!--#}#-->
+		</div>
+		<!--# if ($showReply) { #-->
+			<!--快速回复-->
+			<div class="floor cc"  style="margin-top:30px;">
+				<table width="100%" style="table-layout:fixed;" class="floor_table">
+					<tr>
+						<td class="floor_reply box_wrap" >
+							<div class="fl"><div class="floor_arrow"><em></em><span></span></div></div>
+							<!--# if (!$loginUser->isExists()) { #-->
+								<div class="reply_login_tips">
+									您需要登录后才可以回帖，<a href="#floor_reply" rel="nofollow" class="J_qlogin_trigger">登录</a>&nbsp;或者&nbsp;<a rel="nofollow" href="{@url:u/register/run}">注册</a>
+								</div>
+							<!--# } else { #-->
+							<div class="reply_toolbar_wrap">
+								<div class="reply_toolbar cc">
+									<a href="" style="display:;"  tabindex="-1" rel="nofollow" class="icon_face J_insert_emotions" data-emotiontarget="#J_reply_quick_ta">表情</a>
+								</div>
+								<textarea name="atc_content" aria-label="快速回复" id="J_reply_quick_ta" class="J_at_user_textarea" placeholder="我也说两句"></textarea>
+							</div>
+							<div class="J_reply_ft" id="J_reply_ft">
+								<button type="submit" data-tid="{$tid}" data-action="{@url:bbs/post/doreply?_getHtml=1}" class="btn btn_submit disabled" disabled="disabled" id="J_reply_quick_btn">回复</button>
+							</div>
+							<!--# } #-->
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!--快速回复结束-->
+			<!--# } #-->
+			<pw-tpl id="read_bottom"/>
+			<div id="cloudwind_read_bottom"></div>
+	</div>
+	
+	<!--左结束-->
+	<!--#}#-->
+<!--#}#-->
+	<!--中间开始-->
+	<div class="middleside" style="width:430px;height:740px;">
+		<h3 class="titleBase">
+				<span class="buleBg">讨论</span>
+				<p> 浏览 <span>{$threadInfo['hits']}</span> | 回复 <span>{$threadInfo['replies']}</span> | <a href="javascript:click_concerned({$read['tid']},{$read['created_userid']})">关注</a></p>
+			</h3>
+		<ul class="talkList"  >
+		<!--# foreach ($readdb as $key => $read) { #-->
+		<!--#if($key>0){#-->
+			<li>
+				<div class="replyDiv_1" >
+					<div class="nameTime">
+					<a href="{@url:space/index/run?uid=$read['created_userid']}" data-uid="{$read['created_userid']}" target="_blank"><img src="{@Pw::getAvatar($read['created_userid'])}" class="J_avatar" data-type="middle" alt="{$read['created_username']}"></a>
+					<p  class="name">{$read['created_username']}</p>
+					<p>
+					<!--# if ($loginUser->getPermission('view_ip_address')) { #--><span title="IP: {$read['created_ip']}" class="fl">来自：{$read['ipfrom']}</span> <!--#}#-->&nbsp;&nbsp;&nbsp;<span >发布于：{@Pw::time2str($read['created_time'])}</span>
+				</p>
+					
+					<div class="clear"></div>
+					</div>
+					<div style="position:relative;"><span class="lou J_floor_copy" title="复制此楼地址" <!--# if($read['lou'] == 0) {#--> data-type="main"<!--# } #--> data-hash="read_{$read['pid']}">{@$threadDisplay->getFloorName($read['lou'])}<sup>#</sup></span>
+	
+					</div>
+					<!--# if ($read['disabled'] == 1) { #-->
+						<div class="inside_logs"><span class="red">该帖需要审核通过后才能显示</span></div>
+					<!--# } #-->
+								<!--# if (!empty($read['istopped'])) { #-->
+			<div class="inside_logs"><span class="org">帖内置顶</span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;{$users[$read['topped_userid']]['username']}&nbsp;&nbsp;&ndash;&nbsp;&nbsp;{@Pw::time2str($read['topped_time'])}</div>
+					<!--# } #-->
+					<p >{$read['content']|html}</p>
+					<!--# if ($read['modified_time']) { #-->
+				<div class="edit_log">[{$read['modified_username']}于{@Pw::time2str($read['modified_time'])}编辑了帖子]</div>
+				<!--# } #-->
+				</div>
+		<td class="box_wrap floor_bottom" valign="bottom">
+		<!--# if ($threadDisplay->attach && $attach = $threadDisplay->attach->getList($read['pid'])) { #-->
+			<!--# if ($attach['pic']) { #-->
+				<!--# $_isShowSmall = (count($attach['pic']) >= 5); #-->
+			<div class="read_attach_pic">
+				<!--# if ($_isShowSmall) { #-->
+				<div class="hd">
+					<div class="fr"><a href="javascript:;" class="current J_big_images">大图</a><span>|</span><a href="javascript:;" class="J_small_images">小图</a></div>
+					<h2>图片</h2>
+				</div>
+				<!--# } #-->
+				<div class="ct">
+					<ul class="cc big_img J_gallery_list" style="display:{@$_isShowSmall ? 'none' : ''}">
+						<!--# foreach ($attach['pic'] as $key => $value) { #-->
+						<li class="J_gallery_items"><span class="J_attach_img_wrap"><div class="img_info J_img_info"><!--# if ($value['descrip']) { #--><p>描述：{$value['descrip']}</p><!--# } #--><p>图片：{$value['name']}<!--# if ($threadPermission['deleteatt']) { #--><a class="J_read_img_del w" href="{@url:bbs/attach/delete?aid=$value['aid']}">[删除]</a><!--# } #--></p></div><a data-big="{$value['url']}" href="javascript:;">{$value['img']|html}</a></span></li>
+						<!--# } #-->
+					</ul>
+					<!--# if ($_isShowSmall) { #-->
+					<ul class="cc small_img J_gallery_list">
+						<!--# foreach ($attach['pic'] as $key => $value) { #-->
+						<li class="J_gallery_items"><a data-big="{$value['url']}" href="{$value['url']}" target="_blank"><img onerror="this.onerror=null;this.className='J_error';" src="{$value['miniUrl']}" width="125" height="125" alt=""></a></li>
+						<!--# } #-->
+					</ul>
+					<!--# } #-->
+				</div>
+			</div>
+			<!--# } #-->
+			<!--# if ($attach['downattach']) { #-->
+			<div class="read_attach_downattach">
+				<dl>
+					<dt class="cc">
+						<span class="name">附件名称/大小</span>
+						<span class="cost">下载次数</span>
+						<span class="time">最后更新</span>
+						<span class="operate"></span>
+					</dt>
+					<!--# foreach ($attach['downattach'] as $key => $value) { #-->
+					<dd class="cc" id="J_att_{$value['aid']}">
+						<span class="name" title="{$value['descrip']}"><span class="file_list_wrap"><span class="file_icon_{$value['ext']}"></span></span><a class="J_attach_post_buy" data-cost="<!--# if ($value['cost']) { #-->true<!--# } #-->" href="{@url:bbs/attach/download?aid=$value['aid']}" data-credit="{$loginUser->getCredit($value['ctype'])}" data-countrel="#J_attach_count_{$value['aid']}">{$value['name']}</a>&nbsp;({$value['size']}KB)&nbsp;</span>
+						<span class="cost"><span class="" id="J_attach_count_{$value['aid']}">{$value['hits']}</span></span>
+						<span class="time">{@Pw::time2str($value['created_time'], 'auto')}</span>
+						<span class="operate">
+							<!--# if ($value['cost']) { #-->
+							售价<span class="org mr10">{$value['cost']}{$creditBo->cType[$value['ctype']]}</span><a href="{@url:bbs/attach/record?aid=$value['aid']}" title="查看记录" class="mr10 fn J_buy_record" data-aid="{$value['aid']}">[记录]</a>
+							<!--# } #-->
+							<!--# if ($threadPermission['deleteatt']) { #--><a class="J_attach_post_del" data-rel="#J_att_{$value['aid']}" href="{@url:bbs/attach/delete?aid=$value['aid']}">[删除]</a><!--# } #-->
+						</span>
+					</dd>
+					<!--# } #-->
+				</dl>
+			</div>
+			<!--# } #-->
+		<!--# } #-->
+			<hook class='$threadDisplay' name='createHtmlAfterContent' args="array($read)" />
+			<!--# if ($read['lou'] == 0) { #-->
+			<div class="read_appbtn_wrap">
+				<!--# if (!$read['pid']) { #-->
+				<a role="button" rel="nofollow" href="{@url:like/mylike/doLike?typeid=1&fromid=$read['tid']}" data-tid="{$tid}" data-pid="{$read['pid']}" data-fid="{$fid}" class="icon_read_like J_like_btn J_qlogin_trigger" data-role="main">
+					<span>喜欢</span><em class="J_like_count">{$read['like_count']}</em>
+				</a>
+				<!--# } #-->
+				<hook class='$threadDisplay' name='createHtmlContentBottom' args="array($read)" />
+			</div>
+			<!--# } #-->
+			<!--# if (!$read['pid']) { #-->
+			<div style="{@empty($read['lastLikeUsers']) ? 'display:none' : ''}" id="J_read_like_list" class="read_like_list cc">
+				<h4 class="J_read_like_tit">最新喜欢：</h4>
+				<!--# if ($read['lastLikeUsers']) { #-->
+					<!--# foreach ($read['lastLikeUsers'] as $likeuser) { #-->
+				<a class="J_user_card_show" data-uid="{$likeuser['uid']}" href="{@url:space/index/run?uid=$likeuser['uid']}"><img  class="J_avatar" src="{@Pw::getAvatar($likeuser['uid'])}" data-type="small" width="50" height="50" alt="{$likeuser['username']}" /><span title="{$likeuser['username']}">{@Pw::substrs($likeuser['username'],6)}</span></a>
+					<!--# } #-->
+				<!--# } #-->
+			</div>
+			<!--# } #-->
+			<div id="app_read_floor_{$read['lou']}"></div>
+			<!--# if ($read['lou'] == 0) { #-->
+			<div id="cloudwind_read_content"></div>
+			<!--# } #-->
+
+			<!--# if ($users[$read['created_userid']]['bbs_sign']) { #-->
+				<!--#
+				$_signheight = (isset($groupRight[$users[$read['created_userid']]['groupid']]['sign_max_height']) && $groupRight[$users[$read['created_userid']]['groupid']]['sign_max_height']) ? $groupRight[$users[$read['created_userid']]['groupid']]['sign_max_height'] : 200;
+				#-->
+			<div class="signature" style="max-height:{$_signheight}px;maxHeight:{$_signheight}px;"><table width="100%"><tr><td>{$users[$read['created_userid']]['bbs_sign']|html}</td></tr></table></div>
+			<!--# } #-->
+			<advertisement id='Read.Layer.TidDown' sys='1'/>
+			<!--# if ($read['lou'] == 0) { #-->
+			<pw-drag id="readFloorbot_segment"/>
+			<!--# } #-->
+	
+			<div class="floor_bottom_tips cc">
+				<!--# $type =  !$read['pid'] ? 'thread' : 'post'; $type_id = !$read['pid'] ? $read['tid'] : $read['pid']; #-->
+				<span class="fr">
+					<!--#if ($read['lou'] == 0 && $canLook && Pw::getstatus($read['tpcstatus'], PwThread::STATUS_OPERATORLOG)) { #-->
+					<a href="{@url:bbs/read/log?tid=$read['tid']&fid=$read['fid']}" class="mr10 J_post_top J_qlogin_trigger" id="J_inside_logs">查看操作记录</a>
+					<!--#}#-->
+					<!--# if ($readdb[0]['created_userid'] == $loginUser->uid)  { #-->
+								<!--#if($readdb[0]['is_ok']==0  && $readdb[0]['topic_type']==1){#-->
+								<a href="javascript:goods({$read['tid']},{$read['created_userid']},{$read['pid']},{$read['lou']})" >最佳答案</a>
+							<!--# } #-->
+					<!--# } #-->
+					<!--# if ($operateReply['toppedreply'] && $read['lou']){ #-->
+						<!--# if (!$read['topped']){ #-->
+					<a href="{@url:bbs/masingle/dotoppedreply?topped=1&tid=$read['tid']&lou=$read['lou']&pid=$read['pid']}" class="mr10 J_post_top J_qlogin_trigger">帖内置顶</a>
+						<!--# } else { #-->
+					<a href="{@url:bbs/masingle/dotoppedreply?topped=0&tid=$read['tid']&lou=$read['lou']&pids[]=$read['pid']}" class="mr10 J_post_top J_qlogin_trigger">取消置顶</a>
+						<!--# } #-->
+					<!--# } #-->
+					<!--# if ($operateReply['read']){ #-->
+					<a href="{@url:bbs/masingle/doinspect?tid=$read['tid']&lou=$read['lou']&pids[]=$read['pid']}" class="mr10 J_read_mark J_qlogin_trigger">已阅</a>
+					<!--# } #-->
+					<!--# if ($loginUser->getPermission('allow_report')) { #-->
+					<a rel="nofollow" href="{@url:report/index/report?type=$type&type_id=$type_id}" data-pid="{$read['pid']}" class="mr10 J_report J_qlogin_trigger">举报</a>
+					<!--# } #-->
+					<!--# if ($operateReply) { #-->
+					<label for="label_{$read['pid']}"><input name="pids[]" id="label_{$read['pid']}" type="checkbox" value="{$read['pid']}" class="J_check checkbox">管理</label>
+					<!--# } #-->
+				</span>
+				<!--# if ($read['lou'] != 0 && (!$pwforum->forumset['locktime'] || ($read['created_time'] + $pwforum->forumset['locktime'] * 86400) > Pw::getTime())) { #-->
+				<a rel="nofollow" href="{@url:bbs/post/fastreply?tid=$tid&pid=$read['pid']}" data-pid="{$read['pid']}" class="a_reply J_read_reply" data-topped="{@empty($read['istopped']) ? 'false' : 'true'}">回复<span style="{@$read['replies'] > 0 ? '' : 'display:none'}">({$read['replies']})</span></a>
+				<!--# } else { #-->
+				<a rel="nofollow" href="#floor_reply" data-hash="floor_reply" class="a_reply" id="J_readreply_main">回复</a>
+				<!--# } #-->
+				<!--# if ($read['pid']) { #-->
+				<a rel="nofollow" href="{@url:like/mylike/doLike?typeid=2&fromid=$read['pid']}" data-tid="{$tid}" data-pid="{$read['pid']}" data-fid="{$fid}" class="a_like J_like_btn J_qlogin_trigger">喜欢</a><span style="{@$read['like_count'] ? '' : 'display:none'}">(<a class="J_like_user_btn a_like_num" data-pid="{$read['pid']}" href="{@url:like/like/getLast?typeid=2&fromid=$read['pid']}">{$read['like_count']}</a>)</span>
+				<!--# } #-->
+				<hook class='$threadDisplay' name='createHtmlForThreadButton' args="array($read)" />
+			</div>
+			<div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_{$read['pid']}{@empty($read['istopped']) ? '' : '_topped'}"><div class="pop_loading"></div></div>
+		</td>
+				
+			</li>
+			
+			
+			<!--#}#-->
+				<!--# } #-->
+				<span id="floor_reply"></span>
+		</ul>
+
+		
+	</div><!--中间结束-->
+<!--# if ($read['lou'] == 0) { #-->
+<pw-drag id="readFloor_segment"/>
+<!--# } #-->
+<advertisement id='Read.Layer.TidAmong' sys='1'/>
+
+
+	<div class="clear"></div>
+<div class="content" style="padding-top:30px;">
+	<div class="leftside" style="width:436px;">
+		<h3 class="titleBase"> <span>相关讨论</span>	&nbsp;</h3>
+		<ul class="talkSel">
+			<li>
+				<p class="paddL"><a href="#">dewhide回家额我还ifh</a></p>
+				<div class="date margintop0">
+					<span><a href="#">郭涛</a></span> <span class="colorGray">中国北京</span>
+					<p>浏览 <span>6</span> | 回复 <span>1</span> | 关注 <span>3</span></p>
+				</div>
+				<span class="posR">xxxxxxxxxx</span>
+			</li>
+			<li>
+				<p class="paddL"><a href="#">dewhide回家额我还ifh</a></p>
+				<div class="date margintop0">
+					<span><a href="#">郭涛</a></span> <span class="colorGray">中国北京</span>
+					<p>浏览 <span>6</span> | 回复 <span>1</span> | 关注 <span>3</span></p>
+				</div>
+				<span class="posR">xxxxxxxxxx</span>
+			</li>
+			<li>
+				<p class="paddL"><a href="#">dewhide回家额我还ifh</a></p>
+				<div class="date margintop0">
+					<span><a href="#">郭涛</a></span> <span class="colorGray">中国北京</span>
+					<p>浏览 <span>6</span> | 回复 <span>1</span> | 关注 <span>3</span></p>
+				</div>
+				<span class="posR">xxxxxxxxxx</span>
+			</li>
+		</ul>
+	</div>
+	<div class="middleside1" style="width:440px;">
+		<h3 class="titleBase"> <span>资源推荐</span>	&nbsp;</h3>
+		<div class="resource">
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+			<p><a href="#">&middot; doof金额解放军凤姐芙蓉街放入诶就芙蓉街非人非而金夫人</a></p>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>

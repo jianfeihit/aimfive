@@ -1,0 +1,34 @@
+<!--=============邮件邀请=============-->
+			<div class="pop_report">
+				<form action="{@url:report/index/selemail}"  method="post">
+				<div class="pop_cont">
+					<table>
+							<tr>
+									<td>好友邮箱:<input type="text"  style="width:350px;"  name="textemail"></td>
+							</tr>
+					</table>
+				</div>
+				<div class="pop_bottom">
+					<input type="hidden" name="tid" value="{$tid}">
+					<input type="hidden" name="uid" value="{$uid}">
+					<button type="submit" class="btn btn_submit" onclick="return check()">提交</button>
+				</div>
+				</form>
+			</div>
+<!--=============邮件邀请=============-->
+<script>
+$(function(){
+	$("#J_report_pop strong").html('邮件邀请');
+})
+	function check(){
+		var text_state = $("input[name='textemail']").val();
+		if(text_state==''){
+				flag=false;
+				return false;
+		}else{
+				flag=true;
+				return true;
+		}
+		return flag;
+	}
+</script>

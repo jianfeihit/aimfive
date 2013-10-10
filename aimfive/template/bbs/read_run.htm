@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+	<template source='TPL:common.head' load='true' />
+	<link href="{@theme:css}/forum.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+	<link href="{@G:url.css}/editor_content.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+<style>
+.aPre{
+	cursor:url({@theme:images}/common/pre.cur),auto;
+}
+.aNext{
+	cursor:url({@theme:images}/common/next.cur),auto;right:0;
+}
+.header_wrap{display:none}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+	<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<pw-tpl id="main_segment"/>
+		<div class="bread_crumb">
+			{@$headguide|html}
+		</div>
+		<pw-tpl id="first_segment"/>
+		<div id="app_test"></div>
+		<div id="cloudwind_read_top"></div>
+		<input type="hidden" id="js-tid" value="$tid" />
+		<div class="read_page" id="J_posts_list">
+			<template source='read_floor_new' load='true' />
+			<page tpl="TPL:common.page_vertical" page="$page" per="$perpage" count="$count" total="$totalpage" url="bbs/read/run?tid=$tid&fid=$fid" args="$urlargs"/>
+			<div class="read_pages_wrap cc" id="floor_reply">
+			</div>
+		</div>
+		<!--# if ($operateReply) { #-->
+		<div id="J_post_manage_main" class="core_pop_wrap J_post_manage_pop" style="display:none;position:fixed;_position:absolute;">
+			<div class="core_pop">
+				<div style="width:250px;">
+					<div class="pop_top"><a href="#" id="J_post_manage_close" class="pop_close">关闭</a><strong>帖子操作</strong>(已选中&nbsp;<span class="red" id="J_post_checked_count">1</span>&nbsp;篇&nbsp;&nbsp;<a href="" class="s4" id="J_post_manage_checkall" data-type="check">全选</a>)</div>
+					<div class="pop_cont">
+						<div class="pop_operat_list">
+							<ul class="cc J_post_manage_col" data-role="read">
+								<!--# if ($operateReply['delete']){ #--><li><a data-type="delete" href="{@url:bbs/masingle/delete}">删除</a></li><!--# } #-->
+								<!--# if ($operateReply['unite']){ #--><li><a href="{@url:bbs/masingle/unite}">合并</a></li><!--# } #-->
+								<!--# if ($operateReply['split']){ #--><li><a href="{@url:bbs/masingle/split}">拆分</a></li><!--# } #-->
+								<!--# if ($operateReply['shield']){ #--><li><a href="{@url:bbs/masingle/shield}">屏蔽</a></li><!--# } #-->
+								<!--# if ($operateReply['remind']){ #--><li><a href="{@url:bbs/masingle/remind}">提醒</a></li><!--# } #-->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--# } #-->
+	</div>
+	<template source='TPL:common.footer' load='true' />
+</div>
+
+<textarea id="J_like_user_ta" class="dn">
+	<div id="" class="core_pop_wrap" style="position:absolute;">
+		<div class="core_pop">
+			<div class="floot_like_pop">
+				<div class="pop_top"><a href="#" class="pop_close J_like_user_close">关闭</a>最新喜欢</div>
+				<div class="pop_cont">
+					<ul class="cc J_like_user_list"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</textarea>
+
+<script>
+var TID = '{$tid}';
+Wind.use('jquery', 'global', 'dialog', function(){
+<!--# if(!$is_design) { #-->
+	<!--# if ($loginUser->isExists()) { #-->
+	//已登录
+
+	//管理操作
+	Wind.js(GV.JS_ROOT +'pages/bbs/threadManage.js?v='+ GV.JS_VERSION);
+
+	$('a.J_read_mark').on('click', function(e) {
+		e.preventDefault();
+		var $this = $(this);
+		$.post(this.href, function(data) {
+			Wind.Util.resultTip({
+				error : (data.state == 'success' ? false : true),
+				elem : $this,
+				follow : true,
+				msg : data.message[0]
+			});
+		}, 'json');
+	});
+
+	//加关注
+	$('a.J_read_follow').on('click', function(e) {
+		e.preventDefault();
+		var $this = $(this);
+		Wind.Util.ajaxMaskShow();
+		$.getJSON( this.href, function(data) {
+			Wind.Util.ajaxMaskRemove();
+			if(data.state == 'success') {
+				$this.removeClass('follow').addClass('unfollow').text('已关注');
+				Wind.Util.resultTip({
+					msg : data.message[0],
+					follow : $this
+				});
+
+				$('#J_user_card_'+ $this.data('uid')).remove();
+			}else if( data.state == 'fail' ) {
+				Wind.Util.resultTip({
+					error : true,
+					msg : data.message[0],
+					follow : $this
+				});
+			}
+		});
+	});
+
+	<!--# if ($operateReply['toppedreply'] && $read['lou']){ #-->
+	//帖内置顶
+	(function(){
+		var top_lock = false;
+		$('a.J_post_top').on('click', function(e){
+			e.preventDefault();
+			var $this = $(this),
+				topped = $this.data('topped');
+
+			if(top_lock) {
+				return false;
+			}
+			top_lock = true;
+			$.post(this.href, function(data){
+				if(data.state == 'success') {
+					Wind.Util.resultTip({
+						follow : $this,
+						msg : data.message[0],
+						callback : function(){
+							location.reload();
+						}
+					});
+				}else if(data.state == 'fail') {
+					Wind.Util.resultTip({
+						error : true,
+						follow : $this,
+						msg : data.message[0]
+					});
+					top_lock = false;
+				}
+			}, 'json');
+		})
+	})();
+		<!--# } #-->
+	<!--# } #-->
+
+
+	// 阅读页的常用交互
+	Wind.js(GV.JS_ROOT +'pages/bbs/read.js?v='+ GV.JS_VERSION);
+
+	// 投票帖
+	if($('ul.J_vote_item, a.J_vote_list_show').length) {
+		Wind.js(GV.JS_ROOT +'pages/bbs/readVote.js?v='+ GV.JS_VERSION);
+	}
+
+	// 购买记录
+	if($('#J_content_sell, #J_attach_buy, a.J_buy_record, .J_attach_post_del, a.J_attach_post_buy').length) {
+		Wind.js(GV.JS_ROOT + 'pages/bbs/buyRecords.js?v=' + GV.JS_VERSION);
+	}
+
+	//媒体播放
+	if( $('div.J_audio,div.J_video').length ) {
+		Wind.js(window.GV.JS_ROOT + 'pages/bbs/media_play.js?v=' + GV.JS_VERSION);
+	}
+
+
+<!--# if(false != Wekit::C('bbs', 'read.image_lazy')) { #-->
+	// 图片懒加载
+	Wind.js(GV.JS_ROOT + 'util_libs/lazyload.js?v=' + GV.JS_VERSION, function(){
+		$("img.J_lazy").lazyload({
+	        effect: 'fadeIn',
+	        error: function(settings){
+	        	$(this).attr("src", '#').removeClass("J_lazy")
+	        }
+	    });
+	});
+<!--# } #-->
+
+<!--# } #-->
+});
+
+
+	function goods(tid,uid,pid,lou){
+		$.getJSON('read.php?c=read&a=ajaxGoods',{tid:tid,uid:uid,pid:pid,lou:lou},function(msg){
+					Wind.Util.resultTip({
+						msg : msg.info,
+						callback : function(){
+							location.reload();
+						}
+					});
+		});
+	}
+
+	function addcontent(uid,tid){
+		var con = $("#adcont").val();
+		if(con!=''){
+			$.getJSON('read.php?c=read&a=ajaxaddcon',{tid:tid,con:con},function(msg){
+					Wind.Util.resultTip({
+						msg : msg.info,
+						callback : function(){
+							location.reload();
+						}
+					});
+			});
+		}
+	}
+	
+	
+</script>
+
+<hook class='$threadDisplay' name="runJs" />
+<pw-end/>
+</body>
+</html>

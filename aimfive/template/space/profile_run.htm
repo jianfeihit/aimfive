@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@theme:css}/style.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+</head>
+<style>
+.job1 {height:40px; ling-height:40px;}
+</style>
+<body {@$space->space['backbround']|html}>
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<div class="main cc">
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_2' load='true' />
+			</div>
+		<div class="space_content" style="width:780px">
+			<div >
+				<div class="space_profile">
+					<h3>
+						<!--# if ($space->tome == 2){ #-->
+						<a href="{@url:profile/index/run?_tab=profile}" class="edit">编辑</a>
+						<!--# } #-->
+						<strong>基本资料</strong>
+					</h3>
+					<dl class="cc">
+						<dt>头像:</dt>
+						<dd><img class="J_avatar" src="{@Pw::getAvatar($space->spaceUid,'big')}" data-type="big" width="180" height="180" /></dd>
+					</dl>
+					<dl class="cc">
+						<dt>姓名</dt>
+						<dd>{$space->spaceUser['realname']}</dd>
+					</dl>
+					<dl class="cc">
+						<dt>性别</dt>
+						<dd><!--#if($space->spaceUser['gender']==1){#-->女<!--#}else{#-->男<!--#}#--></dd>
+					</dl>
+					<!--# if ($space->allowView('constellation')){ #-->
+					<dl class="cc">
+						<dt>出生日期</dt>
+						<dd>{$space->spaceUser['byear']}年{$space->spaceUser['bmonth']}月{$space->spaceUser['bday']}日</dd>
+					</dl>
+					<!--# } #-->	
+					
+					<dl class="cc">
+						<dt>职位:</dt>
+						<dd>
+						<!--# if ($job['zhiwei']){ #-->
+						{$job['zhiwei']}
+						<!--#}else{ #-->
+						暂未填写
+						<!--#}#-->
+						</dd>
+					</dl>
+					
+					<dl class="cc">
+						<dt>工作单位</dt>
+						<dd>
+						<!--# if ($job['company']){ #-->
+						{$job['company']}
+						<!--#}else{ #-->
+						暂未填写
+						<!--#}#-->
+						</dd>
+					</dl>
+					<!--# if ($space->allowView('local')){ #-->
+					<dl class="cc">
+						<dt>现居住地</dt>
+						<dd>{$address}</dd>
+					</dl>
+					<!--# } #-->	
+					<!--# if ($space->allowView('nation')){ #-->
+					<dl class="cc">
+						<dt>家乡</dt>
+						<dd>{$home}</dd>
+					</dl>
+					<!--# } #-->
+						<dl class="cc">
+						<dt>个人主页:</dt>
+						<dd>{$space->spaceUser['homepage']}</dd>
+					</dl>
+						<dl class="cc">
+						<dt>自我简介:</dt>
+						<dd>{$space->spaceUser['profile']}</dd>
+					</dl>
+						<dl class="cc">
+						<dt>帖子签名:</dt>
+						<dd>{$space->spaceUser['bbs_sign']}</dd>
+					</dl>	
+					<dl class="cc">
+						<dt>注册日期</dt>
+						<dd>{@Pw::time2str($space->spaceUser['regdate'], 'Y年m月d日')}</dd>
+					</dl>
+					<dl class="cc">
+						<dt>最后登录</dt>
+						<dd>{@Pw::time2str($space->spaceUser['lastvisit'], 'Y年m月d日')}</dd>
+					</dl>
+				</div>
+			<!--# if ($space->allowView('aliwangwang') || $space->allowView('qq') || $space->allowView('msn') || $space->allowView('mobile')){ #-->
+				<div class="space_profile">
+					<h3>
+					<!--# if ($space->tome == 2){#-->
+						<a href="{@url:profile/index/contact?_tab=contact}" class="edit">编辑</a>
+					<!--# } #-->
+						<strong>联系方式</strong>
+					</h3>
+					<dl class="cc">
+						<dt>Email:</dt>
+						<dd>{$space->spaceUser['email']}</dd>
+					</dl>
+					<!--# if ($space->allowView('mobile')){ #-->
+					<dl class="cc">
+						<dt>手机号码</dt>
+						<dd>{$space->spaceUser['mobile']}</dd>
+					</dl>
+					<!--# } #-->	
+					<!--# if ($space->allowView('telphone')){ #-->
+					<dl class="cc">
+						<dt>固定电话:</dt>
+						<dd>{$space->spaceUser['telphone']}</dd>
+					</dl>
+					<!--# } #-->	
+				</div>
+			<!--# } #-->	
+			<!-- 
+				<hook name="space_profile" args="array($space)" />
+				 -->
+			 	<!--#if($jobAll){#-->
+ 				 <div class="space_profile">
+					<h3>
+						<a href="?m=profile&c=work&_tab=work" class="edit">编辑</a>
+						<strong>工作经历</strong>
+					</h3>
+					<table width="100%">
+							<tr>
+									<td width="30%">工作单位</td>
+									<td width="30%">工作时间</td>
+									<td width="10%" >职位</td>
+									<td width="30%">项目经验</td>
+							</tr>
+						<!--#foreach($jobAll as $k=>$v){#-->
+							<tr class="job1">
+										<td>{$v['company']}</td>
+										<td>{$v['starty']}年{$v['startm']}月&nbsp;至&nbsp;
+										<!--#if($v['endy']==0 && $v['endm']==0){#-->
+										今
+										<!--#}else{#-->
+										{$v['endy']}年{$v['endm']}月
+										<!--#}#-->
+										</td>
+										<td>{$v['zhiwei']}</td>
+										<td>{$v['jingyan']}</td>
+							</tr>
+						<!--#}#-->
+					</table>
+				</div>
+				<!--#}#-->
+			 	<!--#if($schoolAll){#-->
+ 				 <div class="space_profile">
+					<h3>
+					<a href="?m=profile&c=education&_tab=education" class="edit">编辑</a>
+						<strong>教育经历</strong>
+					</h3>
+					<table width="100%">
+							<tr>
+									<td width="15%">学历</td>
+									<td width="35%">学校名称</td>
+									<td width="15%" >入学年份</td>
+									<td width="35%">专业</td>
+							</tr>
+						<!--#foreach($schoolAll as $k=>$v){#-->
+							<tr class="job1">
+										<td>{$v['xueli']}</td>
+										<td>{$v['name']}</td>
+										<td>{$v['start_time']}</td>
+										<td>{$v['major']}</td>
+							</tr>
+						<!--#}#-->
+					</table>
+				</div>
+				<!--#}#-->
+			 	<!--#if($showTag){#-->
+ 				 <div class="space_profile">
+					<h3>
+					<a href="?m=profile&c=tag&_tab=tag" class="edit">编辑</a>
+						<strong>技术专长爱好</strong>
+					</h3>
+					<table width="100%">
+							<tr>
+									<td>我的标签:</td>
+							</tr>
+						
+							<tr class="job1">
+										<td><!--#foreach($showTag as $k=>$v){#--><span style="padding-left:5px;">{$v['name']}<!--#}#--></span></td>
+							</tr>
+						
+					</table>
+				</div>
+				<!--#}#-->
+				 <div class="space_profile">
+					<h3>
+						<strong>账户信息</strong>
+					</h3>
+					<dl  class="cc">
+						<dt style="width:auto">
+						积分:{$space->spaceUser['credit2']}　
+						功力:{$space->spaceUser['credit3']}　
+						<a href="{@url:space/thread/run?uid=$space->spaceUid}"><em>帖子:</em><span>{$space->spaceUser['postnum']}</span></a>　
+						<a href="{@url:space/fans/run?uid=$space->spaceUid}"><em>粉丝:</em><span>{$space->spaceUser['fans']}</span></a>　
+						<a href="{@url:space/follows/run?uid=$space->spaceUid}"><em>关注:</em><span>{$space->spaceUser['follows']}</span></a></dt>
+					</dl>
+				
+				</div>
+			</div>
+			
+		</div>
+		</div>
+</div>
+
+
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+//引入js组件
+Wind.use('jquery', 'global', 'dialog', 'ajaxForm', 'tabs', 'draggable', 'uploadPreview', function(){
+	Wind.js(GV.JS_ROOT +'pages/space/space_index.js?v='+ GV.JS_VERSION);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+<template source='TPL:common.head' load='true' />
+<link href="{@theme:css}/forum.css?v={@NEXT_RELEASE}" rel="stylesheet" />
+</head>
+<body>
+<div class="wrap">
+<template source='TPL:common.header' load='true' />
+	<div class="main_wrap">
+		<pw-tpl id="main_segment"/>
+		<div class="bread_crumb" id="bread_crumb">
+			<a href="{@url:}" class="home" title="{@C:site.info.name}">首页</a><em>&gt;</em><a href="{@url:bbs/forum/my}">我的回复</a>
+		</div>
+		<div class="main cc">
+			<div class="main_sidebar">
+				<template source='TPL:common.sidebar_2' load='true' />
+			</div>
+			<div class="main_body"  style="width:620px;">
+				<div class="main_content cc">
+					<pw-tpl id="first_segment"/>
+					<advertisement id='Thread.Top' sys='1'/>
+					<div class="box_wrap thread_page">
+				<nav>				
+					<div class="tab_menu">
+						<ul class="myInfoUl">
+								<template source='TPL:bbs.index_menu' load='true' />
+								<div class="clear"></div>
+						</ul>
+					</div>
+				</nav>
+			<!--公告-->
+						<component tpl='TPL:announce.announce' class='SRV:announce.srv.PwAnnounceService' method='getAnnounceForBbsScroll' args='array()'/>
+						<!--公告结束-->
+			<div class="paixu" style="width:580px;">
+			<div class="content_filter" ><a href="{@url:bbs/forum/device?order=postdate}" class="{@Pw::isCurrent($order == 'postdate')}">最新发帖</a><span>|</span><a href="{@url:bbs/forum/device}" class="{@Pw::isCurrent($order != 'postdate')}">最后回复</a></div>
+				<h3>我的器件</h3>
+			</div>
+			<!--# if ($threadList) { #-->
+				<ul class="askSel" >
+				<!--# foreach ($threadList as $key => $value) { #-->
+					<li>
+					<span style="float:right">{$value['v_type_name']}</span>
+					<h3>
+					<!--# if ($value['topic_type']==1) { #-->
+					<span style="color:red">【提问】</span>
+					<!--# }else{ #-->
+					<span style="color:red">【分享】</span>
+					<!--#}#-->
+					<a href="{@url:bbs/read/run?tid=$value['tid']&fid=$value['fid']}" class="st" style="{$value['highlight_style']}" title="{$value['subject']}" target="_blank">{$value['subject']}</a> <hook class='$threadList' name='createHtmlAfterSubject' args="array($value)" /><!--# if ($value['ifupload']) { #--><span class="posts_icon"><i class="icon_{$uploadIcon[$value['ifupload']]}" title="{$icon[$uploadIcon[$value['ifupload']]]}"></i></span><!--# } #-->
+					</h3>
+					<div class="touxiangdiv"><span><img class="J_avatar" src="{@Pw::getAvatar($value['lastpost_userid'])}" data-type="middle"  alt="{$loginUser->username}" /></span></div>
+					<div class="contdiv">
+					<p>最后回复：<a class="J_user_card_show" data-uid="{$value['lastpost_userid']}" href="{@url:space/index/run?uid=$value['lastpost_userid']}" target="_blank">{$value['lastpost_username']}&nbsp;&nbsp;&nbsp;</a><span><a  aria-label="最后回复时间"><!--# echo Pw::time2str($value['lastpost_time'], 'm-d H:i');#--></a></span></p>
+					
+					</div>
+					<div class="clear"></div>
+					<div class="date">
+					<span class="colorGray">楼主：<a class="J_user_card_show" data-uid="{$value['created_userid']}" href="{@url:space/index/run?uid=$value['created_userid']}">{$value['created_username']}&nbsp;&nbsp;&nbsp;</a><span><!--# echo Pw::time2str($value['created_time'], 'Y-m-d');#--></span></span>
+					<p><!--#if($value['jf']){#-->悬赏<span>{$value['jf']}</span>分 <!--#}#--> 浏览<span>{$value['hits']}</span> | 回复<span>{$value['replies']} | <a href="javascript:click_concerned({$value['tid']},{$value['created_userid']})">关注</a></p>
+					</div>
+					</li>
+					<!--# } #-->
+					</ul>
+						<!--# } else { #-->
+						<div class="not_content">
+							啊哦，本站暂没有任何内容哦！
+						</div>
+						<!--# } #-->
+					</div>
+						<div class="J_page_wrap cc" data-key="true">
+						<page tpl="TPL:common.page" page="$page" per="$perpage" count="$count" total="$totalpage" url="bbs/index/run" args="$urlargs"/>
+					</div>
+					<pw-tpl id="forum_bottom"/>
+					
+				</div>
+
+			</div>
+	<!--#if($type){#-->
+		<div class="rightside" style="padding:50px 10px 0 0;width:160px;float:right">
+		<h3 class="baseTitle">我的器件</h3>
+		
+		<form  action="{@url:bbs/index/run?c=forum&a=deldevice}"  method="post">
+		<!--# if ($d_name) { #-->		
+		<ul class="listUl">
+		<!--# foreach ($d_name as $key => $value) { #-->
+			<li>
+				<p>{$value['v_name']['v_name']} &nbsp;<input type="checkbox"   style="float:right"  value="{$value['vid']}" name="vid[]"/></p>
+			</li>
+			<!--# } #-->	
+				<input type="hidden"  value="{$value['uid']}"  name="uid">
+			<li><input type="submit"  name="sub" value="删除"  class="btn btn_submit"  style="width:150px;"></li>
+			<span style="display:none"  id="is_add"><input type="text" style="width:100px;"  id="add_device">-><a href="javascript:add_device()">添加</a></span>
+			<li><p><a onclick="$('#is_add').show();$('#add_device').val('');">添加器件</a>　　　<a href="{@url:bbs/index/run?c=forum&a=device}">退出管理</a></p></li>
+		</ul>
+		<!--# } else { #-->
+						啊哦，您还没有任何器件信息！
+		<!--# } #-->
+		</form>
+	</div>
+	<!--# } else { #-->
+	<div class="rightside" style="padding:50px 10px 0 0;width:160px;float:right">
+		<h3 class="baseTitle">我的器件</h3>
+		<!--# if ($d_name) { #-->		
+		<ul class="listUl">
+		<!--# foreach ($d_name as $key => $value) { #-->
+			<li>
+				<p><input type="checkbox"   <!--#if($value['is_show']==1){#-->checked="checked"<!--#}#-->  onclick="sestate({$value['vid']},{$value['uid']},{$value['is_show']})"/>&nbsp;{$value['v_name']['v_name']}</p>
+			</li>
+			<!--# } #-->	
+			<li><p><a href="{@url:bbs/index/run?c=forum&a=device&type=edit}">器件管理</a></p></li>
+		</ul>
+		<!--# } else { #-->
+						啊哦，您还没有任何器件信息！
+		<!--# } #-->
+	</div>
+			<!--# } #-->
+		</div>
+	</div>
+<template source='TPL:common.footer' load='true' />
+</div>
+<script>
+Wind.use('jquery', 'global');
+function sestate(vid,uid,state){
+	$.getJSON('index.php?c=forum&a=device_state',{vid:vid,uid:uid,state:state},function(msg){
+		if(msg.error==0){
+			Wind.Util.resultTip({
+				msg : msg.info,
+				callback : function(){
+					location.reload();
+				}
+			});
+		}
+	})
+}
+function add_device(){
+	var d_name = $("#add_device").val();
+	if($.trim(d_name)){
+		$.getJSON('index.php?c=forum&a=addldevice',{d_name:d_name},function(msg){
+			if(msg.error==0){
+				Wind.Util.resultTip({
+					msg : msg.info,
+					callback : function(){
+					location.reload();
+					}
+				});
+			}else{
+				Wind.Util.resultTip({
+					msg : msg.info,
+				});
+			}
+		})
+	}else{
+		Wind.Util.resultTip({
+			msg : '请填写器件名称!'
+		});
+	}
+}
+
+</script>
+<pw-end/>
+</body>
+</html>
