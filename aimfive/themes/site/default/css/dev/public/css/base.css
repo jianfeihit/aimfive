@@ -1,0 +1,14 @@
+
+
+/* CSS Document */
+
+*{ margin:0; margin:0;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div{ border:0;}
+body{ font-size:12px;  font-family: Arial,"Microsoft Yahei"; word-wrap:break-word; color:#555; line-height:1.5;}
+/*font-family:'宋体';Arial, Helvetica, sans-serif;*/
+ul,ol{list-style-type:none;}
+select,input,img,select{vertical-align:middle; color:#555;}
+a{ text-decoration:none; color:#555;}
+a:hover{}
+a:hover{ text-decoration:none;} 
+.clear{clear:both;}
