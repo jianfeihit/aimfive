@@ -76,6 +76,7 @@
 						<dd>{$home}</dd>
 					</dl>
 					<!--# } #-->
+					<!--#if(0==1){#-->
 						<dl class="cc">
 						<dt>个人主页:</dt>
 						<dd>{$space->spaceUser['homepage']}</dd>
@@ -87,7 +88,8 @@
 						<dl class="cc">
 						<dt>帖子签名:</dt>
 						<dd>{$space->spaceUser['bbs_sign']}</dd>
-					</dl>	
+					</dl>
+					<!--# } #-->	
 					<dl class="cc">
 						<dt>注册日期</dt>
 						<dd>{@Pw::time2str($space->spaceUser['regdate'], 'Y年m月d日')}</dd>

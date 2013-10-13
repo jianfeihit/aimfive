@@ -9,9 +9,9 @@ return array(
 	'profile_tabs' => array(
 		'profile' => array('title' => '基本资料', 'url' => 'profile/index/run'),
 		'contact' => array('title' => '联系方式', 'url' => 'profile/index/contact'),
-		'work' => array('title' => '工作经历', 'url' => 'profile/work/run'),
-		'education' => array('title' => '教育经历', 'url' => 'profile/education/run'),
-		'tag' => array('title' => '技术专长爱好', 'url' => 'profile/tag/run'),
+		//'work' => array('title' => '工作经历', 'url' => 'profile/work/run'),
+		//'education' => array('title' => '教育经历', 'url' => 'profile/education/run'),
+		//'tag' => array('title' => '技术专长爱好', 'url' => 'profile/tag/run'),
 	),
 	/* 积分TAB */
 	'credit_tabs' => array(
