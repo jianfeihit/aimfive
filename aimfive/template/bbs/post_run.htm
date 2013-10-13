@@ -86,7 +86,7 @@
 							<td colspan="2">标题 <input type="text" class="textBorder"  style="width:470px"   name="atc_title" id="J_atc_title" value="{$atc_title}" class="input length_6 mr15"{@!empty($isTopic) ? ' required' : ''} aria-required="true" placeholder="{@!empty($default_title) ? $default_title : '请输入标题'}" title="请输入标题" data-max="{@Wekit::C('bbs', 'title.length.max')}"/><span id="J_title_tip"></td>
 						</tr>
 						<!--#if($t_type=='tw' || !$t_type){#-->
-						<tr>
+						<tr style="display:none;">
 							<td colspan="2">悬赏:<input type="text"   class="textBorder"  style="width:40px"  name="jf" id="jf"   <!--#if($jf){#-->value="{$jf}"  disabled<!--#}else{#-->value="2" <!--#}#-->>&nbsp;积分.当前可用分:{$jfa}</td>
 						</tr>
 						<!--#}#-->

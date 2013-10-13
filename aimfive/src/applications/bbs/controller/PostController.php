@@ -92,6 +92,7 @@ class PostController extends PwBaseController {
 			if(!$jf){
 					$this->showError('积分不能为空');
 			}else{
+					$jf = 0;// 强制悬赏积分为0，避免积分不足
 					$jfinfo=$this->getThreadCredit()->getCredit($this->loginUser->uid);
 					if($jf>$jfinfo['credit2']){
 						$this->showError('积分不足');
