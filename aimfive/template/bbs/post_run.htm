@@ -31,7 +31,7 @@
 						<li class="current"><a href="{@url:bbs/post/modify?tid=$tid&pid=$pid}">编辑帖子</a></li>
 					<!--# } else { #-->
 						<!--# foreach ($pwforum->getThreadType($loginUser) as $key => $value) { #-->
-						<li class="{@Pw::isCurrent($special == $key)}"><a href="{@WindUrlHelper::createUrl('bbs/post/run/?fid=' . $fid . ($key != 'default' ? ('&special=' . $key) : ''))}">{$value[1]}</a></li>
+						<li class="{@Pw::isCurrent($special == $key)}"><a href="{@WindUrlHelper::createUrl('bbs/post/run/?fid=' . $fid . '&type=' . $t_type . ($key != 'default' ? ('&special=' . $key) : ''))}">{$value[1]}</a></li>
 						<!--# } #-->
 					<!--# } #-->
 					</ul>
@@ -87,7 +87,7 @@
 						</tr>
 						<!--#if($t_type=='tw' || !$t_type){#-->
 						<tr style="display:none;">
-							<td colspan="2">悬赏:<input type="text"   class="textBorder"  style="width:40px"  name="jf" id="jf"   <!--#if($jf){#-->value="{$jf}"  disabled<!--#}else{#-->value="2" <!--#}#-->>&nbsp;积分.当前可用分:{$jfa}</td>
+							<td colspan="2">悬赏:<input type="text"   class="textBorder"  style="width:40px"  name="jf" id="jf"   <!--#if($jf){#-->value="{$jf}"  disabled<!--#}else{#-->value="0" <!--#}#-->>&nbsp;积分.当前可用分:{$jfa}</td>
 						</tr>
 						<!--#}#-->
 						<tr>

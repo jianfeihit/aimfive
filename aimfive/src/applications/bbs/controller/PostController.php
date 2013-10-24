@@ -87,7 +87,8 @@ class PostController extends PwBaseController {
 		}
 		list($title,$content,$vender,$jf,$vtype,$topictype,$subtopictype, $reply_notice, $hide) = $this->getInput(array('atc_title', 'atc_content','vender','jf','vtype','topictype', 'sub_topictype', 'reply_notice', 'hide'), 'post');
 	
-		$jf=(int)$jf;
+		$jf = 0;//强制积分变化为0
+		/* $jf=(int)$jf;
 		if($topictype==1){
 			if(!$jf){
 					$this->showError('积分不能为空');
@@ -111,7 +112,7 @@ class PostController extends PwBaseController {
 			$this->getThreadCredit()->addLogCreditjf($this->loginUser->uid,$this->loginUser->username,$info,$time=time());
 			$msg="您发布了分享文章,积分变化【积分:+5 】";
 			$this->getThreadCredit()->addNotice($this->loginUser->uid,$msg,$jfinfo['notices']+1,$time=time());
-		}
+		} */
 				$pwPost = $this->post;
 				$this->runHook('c_post_doadd', $pwPost);
 				$postDm = $pwPost->getDm();
