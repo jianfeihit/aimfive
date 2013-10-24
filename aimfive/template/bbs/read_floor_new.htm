@@ -53,7 +53,7 @@
 				<!--# } #-->
 		</div>
 		
-		<p class="appendixStyle"><!--#if($read['topic_type']==1){#-->悬赏点数：{$read['jf']}点<!--#}#-->
+		<p class="appendixStyle"><!--#if(0==1){#--><!--#if($read['topic_type']==1){#-->悬赏点数：{$read['jf']}点<!--#}#--><!--#}#-->
 				&nbsp;
 			<span class="positionSpan">
 			<a rel="nofollow" href="{@url:report/index/warn?loginuid=$loginuid&tid=$read['tid']}" data-pid="{$read['pid']}" class="mr10 J_report J_qlogin_trigger">邀请关注</a>
