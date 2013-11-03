@@ -14,9 +14,14 @@ class PwThreadsDao extends PwBaseDao {
 	
 	protected $_table = 'bbs_threads';
 	protected $_pk = 'tid';
+	public $solveType;
 	protected $_dataStruct = array('tid', 'fid', 'topic_type', 'subject', 'topped', 'digest','overtime', 'highlight', 'inspect', 'ifshield', 'disabled', 'ischeck', 'replies', 'hits','like_count', 'special', 'tpcstatus', 'ifupload', 'created_time', 'created_username', 'created_userid', 'created_ip', 'modified_time', 'modified_username', 'modified_userid', 'modified_ip', 'lastpost_time', 'lastpost_userid', 'lastpost_username', 'reply_notice', 'reply_topped', 'special_sort', 'app_mark');
 	
 	
+	public function setSolveType($menu) {
+		$this->solveType = $menu;
+	}
+
 	public function getThread($tid) {
 		return $this->_get($tid);
 	}
@@ -37,7 +42,7 @@ class PwThreadsDao extends PwBaseDao {
 			return $this->_fetch($tids, 'tid');
 	}
 	//查询难题的方法
-		public function fetchThread_le($tids,$type,$hist) {
+	public function fetchThread_le($tids,$type,$hist) {
 		if($hist==1){
 			return $this->_fetch_hist($tids,$type, 'tid');
 		}else{
@@ -45,6 +50,11 @@ class PwThreadsDao extends PwBaseDao {
 		}
 			
 	}
+
+	public function fetchThread_le_solve($tids,$type,$hist) {
+		return $this->_fetch_nanti($tids,$type, 'tid', $this->solveType);	
+	}
+
 		//修改筛选器件
 		public function savDevice($vid,$uid,$state){
 		$sql = $this->_bindSql('UPDATE %s SET is_show=%s WHERE uid=%s AND vid=%s' , 'aim_bbs_vtype_my',$state,$uid,$vid);

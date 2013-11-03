@@ -272,6 +272,20 @@ class PwBaseDao extends WindDao {
 				$rst = $this->getConnection()->query($sql);
 				return $rst->fetchAll($index, $fetchMode);
 		}
+		// 获取所有难题
+		protected function _fetch_nanti($ids,$type, $index = '', $solveType = 'allnanti', $fetchMode = 0) {
+				$ids=implode(",",$ids);
+				$sql = '';
+				if ($solveType == 'allnanti') {
+					$sql = $this->_bindSql('SELECT * FROM %s WHERE %s IN %s ', $this->getTable()," tid ","($ids)");
+				} else if ($solveType == 'nonanti') {
+					$sql = $this->_bindSql('SELECT * FROM %s WHERE %s IN %s ', $this->getTable()," is_ok=0  AND tid ","($ids)");
+				} else {
+					$sql = $this->_bindSql('SELECT * FROM %s WHERE %s IN %s ', $this->getTable()," is_ok=1  AND tid ","($ids)");
+				}
+				$rst = $this->getConnection()->query($sql);
+				return $rst->fetchAll($index, $fetchMode);
+		}
 		
 	protected function _add($fields, $getId = true) {
 	

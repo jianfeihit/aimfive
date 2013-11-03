@@ -555,8 +555,17 @@ class ForumController extends PwBaseController {
 		if (!$this->loginUser->isExists()) {
 			$this->forwardAction('u/login/run', array('backurl' => WindUrlHelper::createUrl('bbs/forum/my')));
 		}
-		$hot = $_GET['type'];
+		// $hot = $_GET['type'];
+		$hot = 0;
+		$solveType = $this->getInput('solveType', 'get');
+		if ($solveType != 'allnanti' && $solveType != 'yesnanti' && $solveType != 'nonanti') {
+			$solveType = 'allnanti';
+		}
+		
 		$order = $this->getInput('order', 'get');
+		if ($order != 'postdate' && $order != 'replies' && $order != 'lastpost') {
+			$order = 'lastpost';
+		} 
 		$page = intval($this->getInput('page', 'get'));
 		$threadList = new PwThreadList();
 		// $this->runHook('c_thread_run', $forumDisplay);
@@ -565,11 +574,8 @@ class ForumController extends PwBaseController {
 		Wind::import('SRV:forum.srv.threadList.PwNewThread');
 		$forbidFids = Wekit::load('forum.srv.PwForumService')->getForbidVisitForum($this->loginUser);
 		$dataSource = new PwNewThread($forbidFids);
-		if ($order == 'postdate') {
-			$dataSource->setOrderBy($order);
-		} else {
-			$dataSource->setOrderBy('lastpost');
-		}
+		$dataSource->setOrderBy($order);
+		$dataSource->setSolveType($solveType);
 		$threadList->execute($dataSource,$type=1,$puzzle=1,$hits=1);
 		if($hot){
 			$threaddb = $threadList->getList_list();
@@ -579,11 +585,15 @@ class ForumController extends PwBaseController {
 		if ($threadList->total > 12000) {
 			Wekit::load('forum.PwThreadIndex')->deleteOver($threadList->total - 10000);
 		}
+		/*
 		if($hot){
+
 			$threaddb = $threadList->getList_list();
 		}else{
+			var_dump("<LLLLLLLLLLLLL>>>>");
 			$threaddb = $threadList->getList();
 		}
+		*/
 		$fids = array();
 		foreach ($threaddb as $key => $value) {
 		$name = $this->getVender()->getvname($value['v_type']);
@@ -591,13 +601,17 @@ class ForumController extends PwBaseController {
 			$fids[] = $value['fid'];
 		}
 		$forums = Wekit::load('forum.srv.PwForumService')->fetchForum($fids);
+		/*
 		if($hot){
 			$this->setOutput('hot', 'menu');
 		}else{
 			$this->setOutput('nanti', 'menu');
-		}		
+		}	
+		*/
+		$this->setOutput($solveType, 'solveType');
 		$this->setOutput($this->loginUser->uid, 'uid');
 		$this->setOutput($threaddb, 'threadList');
+		$this->setOutput(count($threaddb), 'cnt');
 		$this->setOutput($forums, 'forums');
 		$this->setOutput($threadList->icon, 'icon');
 		$this->setOutput($threadList->uploadIcon, 'uploadIcon');

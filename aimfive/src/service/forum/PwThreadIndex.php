@@ -101,7 +101,9 @@ class PwThreadIndex {
 	 * @return array
 	 */
 	public function fetchNotInFid($fids, $limit, $offset, $order = 'lastpost') {
-		if (empty($fids) || !is_array($fids)) return $this->fetch($limit, $offset, $order);
+		if (empty($fids) || !is_array($fids)) {
+			return $this->fetch($limit, $offset, $order);
+		}
 		
 		$result = $this->_getDao()->fetchNotInFid($fids, $limit, $offset, $order);
 		return array_keys($result);

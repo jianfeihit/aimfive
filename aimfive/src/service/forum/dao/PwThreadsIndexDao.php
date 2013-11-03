@@ -14,7 +14,7 @@ class PwThreadsIndexDao extends PwBaseDao {
 	
 	protected $_table = 'bbs_threads_index';
 	protected $_pk = 'tid';
-	protected $_dataStruct = array('tid', 'fid', 'disabled', 'created_time', 'lastpost_time');
+	protected $_dataStruct = array('tid', 'fid', 'disabled', 'created_time', 'lastpost_time', 'replies', 'hits');
 	protected $_threadTable = 'bbs_threads';
 	
 	public function count() {
@@ -69,6 +69,9 @@ class PwThreadsIndexDao extends PwBaseDao {
 	protected function _getOrderFieldAndIndex($order) {
 		if ($order == 'lastpost') {
 			return array('lastpost_time', 'idx_lastposttime');
+		}
+		if ($order == 'replies'){
+			return array('replies', 'replies');
 		}
 		return array('tid', 'PRIMARY');
 	}

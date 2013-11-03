@@ -227,7 +227,6 @@ class PostController extends PwBaseController {
 			$dataSource = new PwReplyRead($tid, $pid);
 			$threadDisplay->execute($dataSource);
 			$_cache = Wekit::cache()->fetch(array('level', 'group_right'));
-			//var_dump($threadDisplay);exit;
 			$this->setOutput($threadDisplay, 'threadDisplay');
 			
 			$this->setOutput($tid, 'tid');

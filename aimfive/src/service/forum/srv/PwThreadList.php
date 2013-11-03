@@ -87,7 +87,6 @@ class PwThreadList extends PwBaseHookService {
 	*$ds PwNewThread类,$type 提问分享类型,$puzzle 难题 $hits 热门列表 $uid 自己的提问列表
 	*/
 	public function execute(PwThreadDataSource $ds,$type='',$puzzle='',$hits='',$uid='') {
-		
 		$this->_ds = $ds;
 		$this->total = $ds->getTotal();
 		$this->maxPage = ceil($this->total / $this->perpage);

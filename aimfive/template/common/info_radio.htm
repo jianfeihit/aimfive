@@ -1,10 +1,13 @@
 	<div class="rightside" style="padding:10px 10px 0 0;">
 		<h3 class="baseTitle">类别</h3>
 		<div id="se_radio">
-		<p><a href="index.php?c=forum&a=puzzle"><input type="radio" name=1 <!--#if($menu=='nanti'){#-->checked<!--#}#-->>未解决难题</a></p>
+		<p><a href="index.php?c=forum&a=puzzle&solveType=allnanti&order={$order}"><input type="radio" name=1 <!--#if($solveType=='allnanti'){#-->checked<!--#}#-->>全部难题</a></p>
+		<p><a href="index.php?c=forum&a=puzzle&solveType=nonanti&order={$order}"><input type="radio" name=1 <!--#if($solveType=='nonanti'){#-->checked<!--#}#-->>未解决难题</a></p>
+		<p><a href="index.php?c=forum&a=puzzle&solveType=yesnanti&order={$order}"><input type="radio" name=1 <!--#if($solveType=='yesnanti'){#-->checked<!--#}#-->>已解决难题</a></p>
 <!--#if(0==1){#-->		
 		<p><a href="index.php?c=forum&a=sort"><input type="radio" name=1 <!--#if($menu=='fenlei'){#-->checked<!--#}#-->>分类浏览</a></p>
+
+		<p><a href="index.php?c=forum&a=puzzle&order=replies"><input type="radio" name=1 <!--#if($menu=='replies'){#-->checked<!--#}#-->>最热讨论</a></p>
 <!--#}#-->
-		<p><a href="index.php?c=forum&a=puzzle&type=hot"><input type="radio" name=1 <!--#if($menu=='hot'){#-->checked<!--#}#-->>最热讨论</a></p>
 		</div>
 	</div>

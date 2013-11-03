@@ -21,6 +21,7 @@ class PwNewThread extends PwThreadDataSource {
 	protected $count;
 	public $type;
 	public $uid;
+	public $solveType;
 
 	public function __construct($forbidFids = array()) {
 		$this->forbidFids = $forbidFids;
@@ -32,6 +33,13 @@ class PwNewThread extends PwThreadDataSource {
 		$this->order = $order;
 		if ($order != 'lastpost') {
 			$this->urlArgs['order'] = $order;
+		}
+	}
+
+	public function setSolveType($menu) {
+		$this->solveType = $menu;
+		if ($order != 'allnanti') {
+			$this->urlArgs['solveType'] = $menu;
 		}
 	}
 
@@ -104,11 +112,25 @@ class PwNewThread extends PwThreadDataSource {
 		if ($limit > 0) {
 			$tids = $this->_getThreadIndexDs()->fetchNotInFid($this->forbidFids, $limit, $offset, $this->order);
 		
+			$this->_getThreadDs()->setSolveType($this->solveType);
 			$tmp = $this->_getThreadDs()->fetchThread_le($tids,$type);
-			
+			/**
 			$tids='';
 			foreach($tmp as $key=>$value){
 					$tids[]=$value['tid'];
+			}
+			*/
+			if($tmp){
+				foreach($tmp as $key=>$value){
+					$atids[]=$value['tid'];
+				}
+				$d_ids = array_diff($tids,$atids);
+				foreach($d_ids as $k=>$v){
+					$haha = array_search($v,$tids,true);
+					array_splice($tids,$haha,1);
+				}
+			}else{
+				$tids ='';
 			}
 			$tmp = $this->_sort($tmp, $tids);
 			$tmp && $threaddb = array_merge($threaddb,$tmp);
@@ -136,7 +158,6 @@ class PwNewThread extends PwThreadDataSource {
 			$this->order='hist';
 			$this->forbidFids=2;
 			$tids = $this->_getThreadIndexDs()->fetchNotInFid($this->forbidFids, $limit, $offset, $this->order);
-// 		var_dump($tids);
 			$tmp = $this->_getThreadDs()->fetchThread_le($tids,$type,$hist=1);
 			$tids='';
 			foreach($tmp as $key=>$value){

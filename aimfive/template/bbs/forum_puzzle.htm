@@ -27,7 +27,7 @@
 	<div class="middleside1" style="width:570px;padding-top:10px;">
 		<div class="paixu" style="width:550px">
 		
-			<div class="content_filter" ><a href="{@url:bbs/forum/puzzle?order=postdate}<!--#if($menu=='hot'){#-->&type=hot<!--#}#-->" class="{@Pw::isCurrent($order == 'postdate')}">最新发帖</a><span>|</span><a href="{@url:bbs/forum/puzzle?order=lastpost}<!--#if($menu=='hot'){#-->&type=hot<!--#}#-->" class="{@Pw::isCurrent($order != 'postdate')}">最后回复</a></div>
+			<div class="content_filter" ><a href="{@url:bbs/forum/puzzle}&solveType={$solveType}" class="{@Pw::isCurrent($order != 'postdate' && $order != 'replies')}">最后回复</a><span>|</span><a href="{@url:bbs/forum/puzzle?order=postdate}&solveType={$solveType}" class="{@Pw::isCurrent($order == 'postdate')}">最新发帖</a><span>|</span><a href="{@url:bbs/forum/puzzle?order=replies}&solveType={$solveType}" class="{@Pw::isCurrent($order == 'replies')}">最热讨论</a></div>
 				<h3>浏览</h3>	
 			</div>
 				<!--# if ($threadList) { #-->

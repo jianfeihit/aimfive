@@ -25,6 +25,8 @@ class PwThread {
 	const STATUS_CLOSED = 2;
 	const STATUS_DOWNED = 3;
 	const STATUS_OPERATORLOG = 4;//是否有帖子操作日志
+
+	public $solveType;
 	
 	/**
 	 * 获取单个帖子信息
@@ -54,6 +56,10 @@ class PwThread {
 			return $this->_getThreadDao($fetchmode)->fetchThread($tids,$type,$uid);
 		}
 	}
+
+	public function setSolveType($menu) {
+		$this->solveType = $menu;
+	}
 	
 //后台删除帖子的方法
 	public function fetchThreadd($tids,$fetchmode = self::FETCH_MAIN) {
@@ -72,7 +78,9 @@ class PwThread {
 		public function fetchThread_le($tids,$type,$hist, $fetchmode = self::FETCH_MAIN) {
 		
 		if (empty($tids) || !is_array($tids)) return array();
-		return $this->_getThreadDao($fetchmode)->fetchThread_le($tids,$type,$hist);
+		//var_dump($this->_getThreadDao($fetchmode));
+		$this->_getThreadDao($fetchmode)->setSolveType($this->solveType);
+		return $this->_getThreadDao($fetchmode)->fetchThread_le_solve($tids,$type,$hist);
 	}
 	
 	/**
