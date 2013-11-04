@@ -35,10 +35,11 @@
 				<!--# foreach ($threadList as $key => $value) { #-->
 				<li>
 					<span style="float:right">{$value['v_type']}</span>
-					<h3>
 					<!--# if ($value['topic_type']==1) { #-->
+					<h3 class="tiwen">
 					<span style="color:red">【提问】</span>
 					<!--# }else{ #-->
+					<h3 class="fenxiang">
 					<span style="color:red">【分享】</span>
 					<!--#}#-->
 					<a href="{@url:bbs/read/run?tid=$value['tid']&fid=$value['fid']}" class="st" style="{$value['highlight_style']}" title="{$value['subject']}" target="_blank">{$value['subject']}</a> <hook class='$threadList' name='createHtmlAfterSubject' args="array($value)" /><!--# if ($value['ifupload']) { #--><span class="posts_icon"><i class="icon_{$uploadIcon[$value['ifupload']]}" title="{$icon[$uploadIcon[$value['ifupload']]]}"></i></span><!--# } #-->
