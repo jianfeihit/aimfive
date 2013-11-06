@@ -25,7 +25,9 @@
 							<ul style="padding-top:10px;">
 							<li><a href="{@url:space/thread/run?uid=$space->spaceUid}"><span>{$space->spaceUser['postnum']}</span><em>帖子</em></a></li>
 							<li><a href="{@url:space/follows/run?uid=$space->spaceUid}"><span>{$space->spaceUser['follows']}</span><em>关注</em></a></li>
+							<!--# if (0==1) { #-->
 							<li class="tail"><a href="{@url:space/fans/run?uid=$space->spaceUid}"><span>{$space->spaceUser['fans']}</span><em>粉丝</em></a></li>
+							<!--# } #-->
 						</ul>
 					</div>
 					<!--# if (Wekit::C('site','medal.isopen')){ #-->
